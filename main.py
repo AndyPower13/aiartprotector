@@ -1,4 +1,3 @@
-
 import os
 from flask import Flask, request
 import requests
@@ -22,8 +21,10 @@ def webhook():
     if "message" in data:
         message = data["message"]
         chat_id = message["chat"]["id"]
+
         if "text" in message:
             text = message["text"]
+
             if text == "/start":
                 send_message(chat_id, "👋 Welcome to AI ArtProtector!")
             elif text == "/donate":
@@ -34,3 +35,4 @@ def webhook():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+
