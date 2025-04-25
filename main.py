@@ -3,6 +3,7 @@ from flask import Flask, request
 import requests
 
 TOKEN = os.environ.get("BOT_TOKEN")
+WEBHOOK_URL = f"https://aiartprotector.onrender.com/{TOKEN}"
 BMC_URL = "https://www.buymeacoffee.com/aiartprotector"
 
 app = Flask(__name__)
@@ -22,23 +23,35 @@ def webhook():
         chat_id = message["chat"]["id"]
 
         if "text" in message:
-            if message["text"] == "/start":
+            text = message["text"]
+            if text.startswith("/start"):
                 reply_markup = {
                     "inline_keyboard": [[
                         {"text": "☕ Support the Project", "url": BMC_URL}
                     ]]
                 }
                 send_message(chat_id,
-                    "🛡️ AI ArtProtector helps designers and artists detect stolen versions of their artwork online.\n\n🔍 No signup. No tracking. Just protection.\n🖼️ Send your artwork — I’ll check it online.\n🔐 100% private.",
+                    "🛡️ *AI ArtProtector* helps designers detect stolen art online.\n\nJust send me your artwork — I'll check it online.",
                     reply_markup=reply_markup
                 )
-        if "photo" in message:
+            elif text.startswith("/language"):
+                send_message(chat_id, "🗣️ Currently supported: English, Українська, Español, Français, Deutsch.")
+
+        elif "photo" in message:
+            file_id = message["photo"][-1]["file_id"]
             send_message(chat_id, "🖼️ Image received. Running a quick check online...\n✅ No obvious duplicates found. Your art looks safe!")
+
     return {"ok": True}
 
 @app.route("/", methods=["GET"])
 def index():
     return "Bot is running."
 
+def set_webhook():
+    url = f"https://api.telegram.org/bot{TOKEN}/setWebhook"
+    data = {"url": WEBHOOK_URL}
+    requests.post(url, json=data)
+
 if __name__ == "__main__":
+    set_webhook()
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))

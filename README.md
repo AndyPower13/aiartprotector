@@ -1,19 +1,12 @@
 # AI ArtProtector Bot (Telegram) — Render Deployment
 
-## 🚀 Як розгорнути бота на Render.com
+## Запуск:
 
-1. Увійди або зареєструйся на [https://render.com](https://render.com)
-2. Створи новий **Web Service**
-3. Завантаж цей архів як код
-4. У вкладці Environment:
-   - Додай нову змінну:
-     - `BOT_TOKEN` → встав сюди свій Telegram токен
+1. Завантаж цей код у GitHub
+2. Підключи до Render (Web Service)
+3. Build Command: pip install -r requirements.txt
+4. Start Command: python main.py
+5. Додай Environment Variable:
+   - BOT_TOKEN = твій токен
 
-5. Вибери:
-   - Build Command: `pip install -r requirements.txt`
-   - Start Command: `python main.py`
-
-6. Натисни **Deploy**
-
-## 🧠 Готово!
-Твій бот почне працювати одразу після запуску.
+Готово! Бот працює.
